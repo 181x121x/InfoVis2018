@@ -1,10 +1,3 @@
-function DebugPrint(str)
-{
-    var out = document.getElementById("debug");
-    if (!out) return;
-    out.value += str;
-}
-
 function main()
 {
     var width = 500;
@@ -56,7 +49,6 @@ function main()
         var color = new THREE.Color( R, G, B );
         cmap.push( [ S, '0x' + color.getHexString() ] );
     }
-    DebugPrint(cmap);
     // Draw color map
     var lut = new THREE.Lut( 'rainbow', cmap.length );
     lut.addColorMap( 'mycolormap', cmap );
@@ -66,7 +58,6 @@ function main()
         'position': { 'x': 0.6, 'y': -1.1, 'z': 2.0 },
         'dimensions': { 'width': 0.15, 'height': 1.2 }
     } ) );
-    //DebugPrint(cmap);
     var geometry = new THREE.Geometry();
     var material = new THREE.MeshBasicMaterial();
 
@@ -93,7 +84,6 @@ function main()
         var S0 = parseInt(255*(scalars[ id[0] ]-0.1)/0.7);
         var S1 = parseInt(255*(scalars[ id[1] ]-0.1)/0.7);
         var S2 = parseInt(255*(scalars[ id[2] ]-0.1)/0.7);
-        DebugPrint(S1);
         var C0 = new THREE.Color().setHex( cmap[ S0 ][1] );
         var C1 = new THREE.Color().setHex( cmap[ S1 ][1] );
         var C2 = new THREE.Color().setHex( cmap[ S2 ][1] );
