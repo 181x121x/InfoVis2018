@@ -1,11 +1,7 @@
 function Isosurfaces( volume, isovalue )
 {
     var geometry = new THREE.Geometry();
-    var material = new THREE.ShaderMaterial({
-        vertexColors: THREE.VertexColors,
-        vertexShader: document.getElementById('phong.vert').text,
-        fragmentShader: document.getElementById('phong.frag').text,
-    });
+    var material = new THREE.MeshLambertMaterial();
 
     var smin = volume.min_value;
     var smax = volume.max_value;
@@ -66,6 +62,7 @@ function Isosurfaces( volume, isovalue )
 
     geometry.computeVertexNormals();
 
+    material.color = new THREE.Color( 1,0.4,0.4 );
 
     return new THREE.Mesh( geometry, material );
 
