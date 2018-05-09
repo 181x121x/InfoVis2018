@@ -62,7 +62,7 @@ function Isosurfaces( volume, isovalue )
 
     geometry.computeVertexNormals();
 
-    material.color = new THREE.Color( "red" );
+    material.color = new THREE.Color( 1,0.4,0.4 );
 
     return new THREE.Mesh( geometry, material );
 
