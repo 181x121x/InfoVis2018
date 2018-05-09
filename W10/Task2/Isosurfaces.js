@@ -2,7 +2,8 @@ function Isosurfaces( volume, isovalue )
 {
     var geometry = new THREE.Geometry();
     var material = new THREE.MeshLambertMaterial();
-
+    material.vertexColors = THREE.VertexColors;
+    
     var smin = volume.min_value;
     var smax = volume.max_value;
     isovalue = KVS.Clamp( isovalue, smin, smax );
@@ -10,6 +11,19 @@ function Isosurfaces( volume, isovalue )
     var lut = new KVS.MarchingCubesTable();
     var cell_index = 0;
     var counter = 0;
+    
+    // Create color map
+    var cmap = [];
+    for ( var i = 0; i <256 ; i++ )
+    {
+        var S = i/255.0; // [0.0,0.7]
+        var R =Math.max( Math.cos( ( S - 1.0 ) * Math.PI ), 0.0 );
+        var G =Math.max( Math.cos( ( S - 0.5 ) * Math.PI ), 0.0 );
+        var B =Math.max( Math.cos( S * Math.PI ), 0.0 );
+        var color = new THREE.Color( R, G, B );
+        cmap.push( [ S, '0x' + color.getHexString() ] );
+    }
+    
     for ( var z = 0; z < volume.resolution.z - 1; z++ )
     {
         for ( var y = 0; y < volume.resolution.y - 1; y++ )
@@ -53,6 +67,10 @@ function Isosurfaces( volume, isovalue )
                     var id1 = counter++;
                     var id2 = counter++;
                     geometry.faces.push( new THREE.Face3( id0, id1, id2 ) );
+                    
+                    geometry.faces[geometry.faces.length -1].vertexColors.push(new THREE.Color().setHex( cmap[ isovalue ][1] ));
+                    geometry.faces[geometry.faces.length -1].vertexColors.push(new THREE.Color().setHex( cmap[ isovalue ][1] ));
+                    geometry.faces[geometry.faces.length -1].vertexColors.push(new THREE.Color().setHex( cmap[ isovalue ][1] ));
                 }
             }
             cell_index++;
@@ -62,7 +80,7 @@ function Isosurfaces( volume, isovalue )
 
     geometry.computeVertexNormals();
 
-    material.color = new THREE.Color( 1,0.4,0.4 );
+    //material.color = new THREE.Color( 1,0.4,0.4 );
 
     return new THREE.Mesh( geometry, material );
 
