@@ -8,8 +8,7 @@
 	<script src="https://naohisas.github.io/KVS.js/Build/KVS.min.js"></script>
 	<script src="https://naohisas.github.io/KVS.js/Build/KVS2THREE.min.js"></script>
 	<script src="https://naohisas.github.io/KVS.js/Source/KVSLobsterData.js"></script>
-
-	<script type="x-shader/x-vertex" id="bounding.vert">
+    <script type="x-shader/x-vertex" id="bounding.vert">
 	 varying vec4 position_obj;
 
 	 void main()
@@ -261,6 +260,8 @@
 	</script>
 
 	<script src="w11_main_ex01.js"></script>
+    <div id="display" style="width: 60%; float: left;"></div> <div id="controller" style="width:40%; float:left;">
+    <textarea cols="20" rows="10" id="debug"></textarea>
 	<script>
 	 main();
 	</script>

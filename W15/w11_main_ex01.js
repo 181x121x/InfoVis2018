@@ -1,3 +1,10 @@
+function DebugPrint(str)
+{
+    var out = document.getElementById("debug");
+    if (!out) return;
+    out.value += str;
+}
+
 function BoundingBoxGeometry( volume )
 {
     var minx = volume.min_coord.x;
@@ -122,8 +129,9 @@ function main()
     var screen = new KVS.THREEScreen();
 
     screen.init( volume, {
-        width: window.innerWidth,
+        width: window.innerWidth * 0.6,
         height: window.innerHeight,
+        targetDom: document.getElementById('display'), 
         enableAutoResize: false
     });
 
@@ -186,7 +194,7 @@ function main()
     });
 
     window.addEventListener( 'resize', function() {
-        screen.resize( [ window.innerWidth, window.innerHeight ] );
+        screen.resize( [ window.innerWidth*0.6, window.innerHeight ] );
     });
 
     screen.loop();
