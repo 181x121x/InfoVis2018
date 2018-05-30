@@ -3,8 +3,8 @@ function Isosurfaces( volume, isovalue )
     var geometry = new THREE.Geometry();
     var material = new THREE.ShaderMaterial({
         vertexColors: THREE.VertexColors,
-        vertexShader: document.getElementById('phong.vert').text,
-        fragmentShader: document.getElementById('phong.frag').text,
+        vertexShader: document.getElementById('phong_lambertian.vert').text,
+        fragmentShader: document.getElementById('phong_lambertian.frag').text,
     });
 
     var smin = volume.min_value;

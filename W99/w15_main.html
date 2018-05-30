@@ -3,19 +3,51 @@
 	<title>W15: Task </title>
     </head>
     <body style="margin:0">
-    <script type="x-shader/x-vertex" id="phong.vert">
+    <script type="x-shader/x-vertex" id="gouraud_lambertian.vert">
+        varying vec3 point_color;
+        varying vec4 point_position;
+        varying vec3 normal_vector;
+        uniform vec3 light_position;
+        // LambertianReflection function
+        vec3 LambertianReflection( vec3 C, vec3 L, vec3 N ) {
+            float ka = 0.4;
+            float kd = 0.6;
+            
+            float dd = max(dot( N, L ), 0.0 );
+            float Ia = ka;
+            float Id = kd * dd;
+            return C * ( Ia + Id );
+        }
+        void main() {
+            point_position = modelViewMatrix * vec4( position, 1.0 ); 
+            normal_vector = normalMatrix * normal;
+            vec3 C = color;
+            vec3 L = normalize( light_position - point_position.xyz ); 
+            vec3 N = normalize( normal_vector );
+            point_color = LambertianReflection( C, L, N );
+            gl_Position = projectionMatrix * point_position;
+        } 
+    </script>
+    
+    <script type="x-shader/x-fragment" id="gouraud_lambertian.frag">
+        varying vec3 point_color;
+        void main() {
+            gl_FragColor = vec4( point_color, 1.0 );
+        } 
+    </script>
+    <script type="x-shader/x-vertex" id="phong_lambertian.vert">
         varying vec3 point_color;
         varying vec4 point_position;
         varying vec3 normal_vector;
     
         void main() {
-            point_color = vec3(1.0, 0.4, 0.4);//color;
+            point_color = color;
             point_position = modelViewMatrix * vec4( position, 1.0 ); 
             normal_vector = normalMatrix * normal;
             gl_Position = projectionMatrix * point_position;
         } 
     </script>
-	<script type="x-shader/x-fragment" id="phong.frag">
+	<script type="x-shader/x-fragment" id="phong_lambertian.frag">
         varying vec3 point_color;
         varying vec4 point_position;
         varying vec3 normal_vector;
