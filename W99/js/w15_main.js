@@ -2,22 +2,25 @@ function main()
 {
     var volume = new KVS.LobsterData();
     var screen = new KVS.THREEScreen();
-
+    
     screen.init( volume, {
         width: window.innerWidth,
         height: window.innerHeight,
         enableAutoResize: false
     });
     
+    
     //outline object
     var bounds = Bounds( volume );
     screen.scene.add( bounds );
     var isovalue = 128;
-    var surfaces = Isosurfaces( volume, isovalue );
+    //default surface
+    var surfaces = Isosurfaces( volume, isovalue, 'Gouraud', 'Phong', '#ff0000', 1.0 );
     screen.scene.add( surfaces );
-
+    
     document.addEventListener( 'mousemove', function() {
-        screen.light.position.copy( screen.camera.position );
+        //screen.light.position.set(5,0,0);
+        //screen.light.position.copy( screen.camera.position );
     });
 
     window.addEventListener( 'resize', function() {
@@ -30,53 +33,36 @@ function main()
     
     //dat.GUI config
     var DefaultSquare = function() {
-        this.color = "#ff0000";
-        this.isovalue = 128;
-        //don't use
-        this.apply = function(){
-        screen.scene.remove( surfaces );
-        surfaces = Isosurfaces( volume, isovalue, Color );
-        screen.scene.add( surfaces );
-	}
-    this.Lambertian = function(){
-        screen.scene.remove( light );
-    }
-    this.Phong = function(){
-        screen.scene.add( light );
-        var geometry = new THREE.Geometry();
-        var material = new THREE.ShaderMaterial({
-        vertexColors: THREE.VertexColors,
-        vertexShader: document.
-        getElementById('gouraud2.vert').text,
-        fragmentShader: document.getElementById('gouraud2.frag').text,
-	    uniforms: {
-	       light_position: {type: 'v3', value: light.position}
-	    }
-        });
-    }
-    //Bounds check box
-    this.Bounds = true;
-    //Reflection config
-    this.Reflection = 'Phong';
-    //Shader config
-    this.Shader = 'Gouraud';
+        this.Color = "#ff0000";
+        this.Isovalue = 128;
+        this.Opacity = 1;
+        //Bounds check box
+        this.Bounds = true;
+        //Reflection config
+        this.Reflection = 'Phong';
+        //Shader config
+        this.Shader = 'Gouraud';
     };    
     
     window.onload = function() {
     square = new DefaultSquare();
     var gui = new dat.GUI();
-    gui.addColor(square, 'color').onChange(setValue);
-    gui.add(square, 'isovalue', 0, 255).step(1).onFinishChange(setValue);
-    gui.add(square, 'apply');
-    //gui.add(square, 'Lambertian');
-    //gui.add(square, 'Phong');
-    gui.add(square, 'Reflection', [ 'Phong', 'Lambertian', 'Blinn-Phong', 'Cook-Torrance', 'Toon' ] );
-    gui.add(square, 'Shader', [ 'Gouraud', 'Phong' ] );
-    gui.add(square, 'Bounds').onChange(setValue);
+    gui.addColor(square, 'Color').onFinishChange(setValue);
+    gui.add(square, 'Isovalue', 0, 255).step(1).onFinishChange(setValue);
+    gui.add(square, 'Opacity', 0, 1.0).step(0.01).onFinishChange(setValue);
+    gui.add(square, 'Reflection', [ 'Phong', 'Lambertian', 'Blinn-Phong', 'Cook-Torrance', 'Toon' ] ).onFinishChange(setValue);
+    gui.add(square, 'Shader', [ 'Gouraud', 'Phong' ] ).onFinishChange(setValue);
+    gui.add(square, 'Bounds').onChange(setBounds);
     };
     
     //update rendering
     function setValue() 
+    {
+        screen.scene.remove(surfaces);
+        surfaces = Isosurfaces( volume, square.Isovalue, square.Shader, square.Reflection, square.Color, square.Opacity );
+        screen.scene.add(surfaces);
+    }
+    function setBounds() 
     {
         if(square.Bounds)
         {

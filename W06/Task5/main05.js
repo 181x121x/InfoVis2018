@@ -26,11 +26,7 @@ function main02()
     var material = new THREE.MeshToonMaterial({
         vertexColors: THREE.VertexColors,
         vertexShader: document.getElementById('phong.vert').text,
-<<<<<<< HEAD:W06/Task3/main02.js
-        fragmentShader: document.getElementById('phong.frag').text,
-=======
         fragmentShader: document.getElementById('phong.frag').text
->>>>>>> 305d48dab2764d03f9596fc4c037b5de52e500e8:W06/Task5/main05.js
     });
     var torus_knot = new THREE.Mesh( geometry, material );
     scene.add( torus_knot );

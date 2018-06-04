@@ -1,10 +1,27 @@
-function Isosurfaces( volume, isovalue )
+function Isosurfaces( volume, isovalue, shader, reflection, color, opacity )
 {
-    var geometry = new THREE.Geometry();
+    var vShader;
+    var fShader;
+    if(shader == 'Gouraud')
+        {
+            vShader = document.getElementById(shader+reflection+'.vert').text,
+            fShader = document.getElementById(shader+'.frag').text
+        }
+        else if(shader == 'Phong')
+        {
+            vShader = document.getElementById(shader+'.vert').text,
+            fShader = document.getElementById(shader+reflection+'.frag').text
+        }
+    var geometry = new THREE.Geometry(); 
     var material = new THREE.ShaderMaterial({
         vertexColors: THREE.VertexColors,
-        vertexShader: document.getElementById('phong_lambertian.vert').text,
-        fragmentShader: document.getElementById('phong_lambertian.frag').text,
+        vertexShader: vShader,
+        fragmentShader: fShader,
+        transparent : true,
+        uniforms:
+        {
+            alpha: { type: 'f', value: opacity }
+        }
     });
 
     var smin = volume.min_value;
@@ -57,6 +74,10 @@ function Isosurfaces( volume, isovalue )
                     var id1 = counter++;
                     var id2 = counter++;
                     geometry.faces.push( new THREE.Face3( id0, id1, id2 ) );
+                    
+                    geometry.faces[geometry.faces.length -1].vertexColors.push(new THREE.Color(color));
+                    geometry.faces[geometry.faces.length -1].vertexColors.push(new THREE.Color(color));
+                    geometry.faces[geometry.faces.length -1].vertexColors.push(new THREE.Color(color));
                 }
             }
             cell_index++;
