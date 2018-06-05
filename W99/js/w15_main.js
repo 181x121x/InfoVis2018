@@ -19,8 +19,7 @@ function main()
     screen.scene.add( surfaces );
     
     document.addEventListener( 'mousemove', function() {
-        //screen.light.position.set(5,0,0);
-        //screen.light.position.copy( screen.camera.position );
+        screen.light.position.copy( screen.camera.position );
     });
 
     window.addEventListener( 'resize', function() {
