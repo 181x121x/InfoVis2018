@@ -21,7 +21,7 @@ function Isosurfaces( volume, isovalue, shader, reflection, color, opacity )
         uniforms:
         {
             alpha: { type: 'f', value: opacity },
-            light_position: { type: 'v3', value: new THREE.Vector3(5,5,5) }
+            //light_position: { type: 'v3', value: new THREE.Vector3(5,5,5) }
         }
     });
 
